@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Cruzen.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cruzen
 {
@@ -25,9 +27,17 @@ namespace Cruzen
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        //public void ConfigureServices(IServiceCollection services)
+        //{
+        //    // Add framework services.
+        //    services.AddMvc();
+        //}
+
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
+            var connection = @"Data Source=NATES-TOSHIBA\SQLEXPRESS;Initial Catalog=Cruzen;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            services.AddDbContext<CruiseDBContext>(options => options.UseSqlServer(connection));
+
             services.AddMvc();
         }
 

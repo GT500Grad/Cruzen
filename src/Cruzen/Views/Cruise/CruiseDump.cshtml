@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Cruzen.Models.Cruise>
+
+@{
+    ViewBag.Title = "Cruises";
+}
+
+<h2>Blogs</h2>
+
+@*<p>
+    <a asp-controller="Blogs" asp-action="Create">Create New</a>
+</p>*@
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CruiseId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+        </tr>
+    }
+</table>

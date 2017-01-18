@@ -1,0 +1,244 @@
+﻿@{
+    ViewData["Title"] = "Cruise Search";
+}
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="city or zip" data-bind="">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+                <select class="form-control ">
+                    <option>10 Miles</option>
+                    <option>25 Miles</option>
+                    <option>50 Miles</option>
+                    <option>100 Miles</option>
+                    <option>Unlimited</option>
+                </select>
+                <div class="input-group input-daterange">
+                    <input type="text" class="form-control input-sm" data-bind="attr: { value: startDate() }">
+                    <span class="input-group-addon">to</span>
+                    <input type="text" class="form-control input-sm" data-bind="attr: { value: endDate() }">
+                </div>
+                <select class="form-control ">
+                    <option>Any Vehicle</option>
+                    <option>Cars/Trucks</option>
+                    <option>Bikes Only</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">&nbsp;</div>
+</div>
+<div class="row">
+    <div class="col-md-7">
+        <div class="input-group">
+            <span class="input-group-addon glyphicon glyphicon-search"></span>
+            <input type="text" class="form-control" placeholder="name, location" aria-describedby="basic-addon1" data-bind="value: searchField, valueUpdate: 'afterkeydown'">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-7 text-right">
+        10 25 50 Print Schedule
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-7 pre-scrollable">
+        <table class="table table-hover">
+            <tbody data-bind="foreach: filteredCruises">
+                <tr>
+                    <td>
+                        <div data-bind="click: selectCruise">
+                            <div class="row">
+                                <div class="col-md-8 text-left">
+                                    <span data-bind="text: name" class="text-primary h3"></span>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <span data-bind="text: status, attr: {class: statusColor }" class="h4"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <span data-bind="text: city"></span>, <span data-bind="text: state"></span><br />
+                                    <span data-bind="text: date"></span>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    Distance: <span data-bind="text: distance"></span><br />
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-send"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-sm-12 text-right">
+                Back to top
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        @*<div class="row">
+                <div class="col-sm-11  col-sm-offset-1">
+                    <div class="input-group input-daterange">
+                        <input type="text" class="form-control" value="2012-04-05">
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="form-control" value="2012-04-19">
+                    </div>
+
+                    <div id="datepicker" data-date="12/03/2012"></div>
+                    <input type="hidden" id="my_hidden_input">
+                </div>
+                <hr />
+            </div>*@
+        <div data-bind="if: selectedCruise().name">
+            <div class="row">
+                <div class="col-sm-11  col-sm-offset-1">
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-send"></span>
+                            <span class="glyphicon glyphicon-print"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8 text-left">
+                            <span data-bind="text: selectedCruise().name" class="h4"></span><br /><br />
+                        </div>
+                        <div class="col-sm-4 text-right">
+                            <span data-bind="text: selectedCruise().status, attr: {class: selectedCruise().statusColor }" class="h4"></span>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-7 text-left">
+                            <address>
+                                <a data-bind="attr: { href: selectedCruise().googleURL }" target="_blank">
+                                    <span data-bind="text: selectedCruise().locationName"></span><br />
+                                    <span data-bind="text: selectedCruise().address1"></span><br />
+                                    @*<span dtat-bind="text: selectedCruise().address2"></span><br />*@
+                                    <span data-bind="text: selectedCruise().city"></span>, <span data-bind="text: selectedCruise().state"></span> <span data-bind="text: selectedCruise().zip"></span>
+                                </a><br />
+                                <abbr title="Phone">P:</abbr> <span data-bind="text: selectedCruise().phone"></span><br />
+                                <abbr title="Email">E:</abbr> <a data-bind="attr: { href: 'mailto:' + selectedCruise().email }" target="_top"><span data-bind="text: selectedCruise().email"></span></a>
+                            </address>
+                        </div>
+                        <div class="col-sm-5 text-right">
+                            <span data-bind="text: selectedCruise().date"></span><br />
+                            <span data-bind="text: selectedCruise().time"></span><br />
+                            Rain Date: <span data-bind="text: selectedCruise().date"></span><br />
+                            Entry Fee: <span data-bind="text: selectedCruise().cost"></span><br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <span data-bind="text: selectedCruise().description"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function Cruise(data) {
+        var self = this;
+
+        
+        self.name = data.name;
+        self.locationName = data.location.name;
+        self.address1 = data.location.address1;
+        self.address2 = data.location.address2;
+        self.city = data.location.city;
+        self.state = data.location.state.abbr;
+        self.zip = data.location.zip;
+        self.phone = data.contactPhone;
+        self.email = data.contactEmail;
+        self.date = data.date;
+        self.startTime = data.cruiseStart;
+        self.startTime = data.cruiseEnd;
+        self.status = data.status.name;
+        self.distance = "50";//data.distance;
+        self.description = data.description;
+        self.cost = data.cost;
+
+        self.googleURL = ko.computed(function () {
+            if (self.address2 == null) {
+                return "http://maps.google.com/?q=" + self.address1 + ", " + self.city + ", " + self.state + ", " + self.zip;
+            }
+            else {
+                return "http://maps.google.com/?q=" + self.address1 + ", " + self.address2 + ", " + self.city + ", " + self.state + ", " + self.zip;
+            }
+        });
+
+        self.statusColor = ko.computed(function () {
+            if (self.status == "Canceled") {
+                return "text-danger";
+            }
+            else
+                return "text-success";
+        });
+    }
+
+
+    function viewModel() {
+        var self = this;
+        self.cruises = ko.observableArray();
+        self.selectedCruise = ko.observableArray();
+
+        var currentDate = moment(new Date());
+        self.startDate = ko.observable(currentDate.format('MM/DD/YYYY'));
+        self.endDate = ko.observable(currentDate.add(1, 'week').format('MM/DD/YYYY'));
+        self.searchField = ko.observable('');
+        self.mileRange = ko.observable('25');
+        self.showType = ko.observable('All');
+
+        self.preferedZip = ko.observable('16120');
+
+
+        self.selectCruise = function (cruise) {
+            selectedCruise(cruise);
+
+        }
+
+        getCruises();
+
+        self.filteredCruises = ko.computed(function () {
+            self.selectedCruise('');
+            var filter = searchField().toLowerCase();
+            if (!filter) {
+                return self.cruises();
+            } else {
+                return ko.utils.arrayFilter(self.cruises(), function (cruise) {
+                    return (cruise.name.toLowerCase().indexOf(filter) !== -1 ||
+                        cruise.location.toLowerCase().indexOf(filter) !== -1 ||
+                        cruise.address().toLowerCase().indexOf(filter) !== -1 ||
+                        cruise.city().toLowerCase().indexOf(filter) !== -1 ||
+                        cruise.zip().toLowerCase().indexOf(filter) !== -1);
+                });
+            }
+        });
+
+        function getCruises()
+        {
+            $.getJSON("/Cruise/GetCruises", { zip: self.preferedZip() }, function (data) {
+                for (r of data)
+                {
+                    self.cruises.push(new Cruise(r));
+                }
+            });
+        }
+    };
+
+    ko.applyBindings(viewModel);
+</script>
